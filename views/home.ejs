@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinkLift | URL Shortener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #3f37c9;
+        --accent: #4895ef;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --success: #4cc9f0;
+        --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        min-height: 100vh;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: var(--dark);
+        line-height: 1.6;
+      }
+      
+      .container {
+        max-width: 900px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+        padding: 2.5rem 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      }
+      
+      .logout-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: 2rem;
+        background: transparent;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        padding: 0.5rem 1.25rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .logout-btn:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-1px);
+      }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .logo-icon {
+        color: var(--primary);
+        font-size: 2rem;
+      }
+      
+      h1 {
+        color: var(--dark);
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.5px;
+      }
+      
+      .tagline {
+        font-size: 1.1rem;
+        color: var(--gray);
+        font-weight: 400;
+        margin-top: 0.5rem;
+      }
+      
+      .quote-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      }
+      
+      .quote-card::before {
+        content: '"';
+        position: absolute;
+        top: 0.5rem;
+        left: 1rem;
+        font-size: 4rem;
+        color: rgba(67, 97, 238, 0.1);
+        font-family: Georgia, serif;
+        line-height: 1;
+      }
+      
+      .quote-text {
+        font-size: 1.25rem;
+        color: var(--dark);
+        font-weight: 500;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
+        padding: 0 1rem;
+      }
+      
+      .quote-author {
+        display: block;
+        text-align: right;
+        font-size: 0.9rem;
+        color: var(--gray);
+        margin-top: 1rem;
+        font-style: italic;
+      }
+      
+      .form-container {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 2.5rem 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+      }
+      
+      .form-title {
+        font-size: 1.25rem;
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      
+      .form-title i {
+        color: var(--accent);
+      }
+      
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--dark);
+      }
+      
+      .form-input {
+        width: 100%;
+        padding: 0.85rem 1.25rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: var(--transition);
+        background: #f8fafc;
+      }
+      
+      .form-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        background: white;
+      }
+      
+      .form-input::placeholder {
+        color: #94a3b8;
+      }
+      
+      .submit-btn {
+        width: 100%;
+        padding: 0.85rem;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .submit-btn:hover {
+        background: linear-gradient(90deg, var(--primary-dark) 0%, var(--secondary) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+      }
+      
+      .result-container {
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        background: #f0f9ff;
+        border-radius: 8px;
+        border-left: 4px solid var(--accent);
+        display: none;
+      }
+      
+      .result-container.show {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      
+      .result-text {
+        font-weight: 500;
+        color: var(--dark);
+      }
+      
+      .result-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        word-break: break-all;
+      }
+      
+      .result-link:hover {
+        text-decoration: underline;
+      }
+      
+      .table-container {
+        margin-top: 3rem;
+        overflow-x: auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      
+      thead {
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        color: white;
+      }
+      
+      th {
+        padding: 1rem 1.25rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      tbody tr {
+        transition: var(--transition);
+      }
+      
+      tbody tr:nth-child(even) {
+        background: #f8fafc;
+      }
+      
+      tbody tr:hover {
+        background: #f1f5f9;
+        transform: translateX(2px);
+      }
+      
+      td {
+        padding: 1rem 1.25rem;
+        color: var(--dark);
+        border-bottom: 1px solid #f1f5f9;
+      }
+      
+      .short-url {
+        color: var(--primary);
+        font-weight: 500;
+        text-decoration: none;
+      }
+      
+      .short-url:hover {
+        text-decoration: underline;
+      }
+      
+      .redirect-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #e6f7ff;
+        color: var(--primary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      
+      .empty-state {
+        text-align: center;
+        padding: 3rem 0;
+        color: var(--gray);
+      }
+      
+      .empty-icon {
+        font-size: 2.5rem;
+        color: #cbd5e1;
+        margin-bottom: 1rem;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @media (max-width: 768px) {
+        .container {
+          margin: 1rem;
+          padding: 1.5rem;
+        }
+        
+        h1 {
+          font-size: 2rem;
+        }
+        
+        .quote-text {
+          font-size: 1.1rem;
+        }
+        
+        .form-container {
+          padding: 1.5rem;
+        }
+        
+        th, td {
+          padding: 0.75rem;
+        }
+        
+        .logout-btn {
+          right: 1rem;
+          top: 1rem;
+          padding: 0.4rem 0.8rem;
+          font-size: 0.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="logout-btn" onclick="window.location.href='/login'">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+      
+      <div class="header">
+        <div class="logo">
+          <i class="fas fa-link logo-icon"></i>
+          <h1>LinkLift</h1>
+        </div>
+        <p class="tagline">Elevate your links with powerful analytics</p>
+      </div>
+      
+      <div class="quote-card">
+        <p class="quote-text">
+          In the digital world, every click counts. Transform lengthy URLs into memorable links that amplify engagement and unlock valuable insights about your audience's journey.
+          <span class="quote-author">— LinkLift Team</span>
+        </p>
+      </div>
+      
+      <% if(locals.id){ %>
+      <div class="result-container show">
+        <p class="result-text">Your shortened URL: <a href="http://localhost:8081/url/<%= id %>" class="result-link" target="_blank">http://localhost:8081/url/<%= id %></a></p>
+      </div>
+      <% } %>
+      
+      <div class="form-container">
+        <h2 class="form-title"><i class="fas fa-magic"></i> Create New Short Link</h2>
+        <form method="POST" action="/url">
+          <div class="form-group">
+            <label for="url" class="form-label">Paste your long URL</label>
+            <input type="text" id="url" name="url" class="form-input" placeholder="https://example.com/very-long-url-that-needs-to-be-shortened" required />
+          </div>
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-rocket"></i> Shorten URL
+          </button>
+        </form>
+      </div>
+      
+      <div class="table-container">
+        <% if(locals.urls && urls.length > 0) {%>
+          <table>
+            <thead>
+              <tr>
+                <th>Short Link</th>
+                <th>Original URL</th>
+                <th>Clicks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% urls.forEach(url => {%>
+                <tr>
+                  <td><a href="http://localhost:8081/url/<%= url.shortId %>" class="short-url" target="_blank">Link</a></td>
+                  <td><%= url.redirectUrl %></td>
+                  <td><span class="redirect-count"><%= url.visitHistory.length %></span></td>
+                </tr>
+              <%}); %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <div class="empty-state">
+            <i class="fas fa-link-slash empty-icon"></i>
+            <p>No shortened URLs yet. Create your first link above!</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+    
+    <script>
+      // Simple animation for the result container
+      if(document.querySelector('.result-container')) {
+        setTimeout(() => {
+          document.querySelector('.result-container').classList.add('show');
+        }, 100);
+      }
+    </script>
+  </body>
+</html>
