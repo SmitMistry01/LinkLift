@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const serverless = require('serverless-http');
 const { connectToMongoDb } = require("./connect");
 const URL = require("./models/url.js");
 const cookieParser = require("cookie-parser");
@@ -57,3 +58,4 @@ app.get("/url/:shortID", async (req, res) => {
 app.listen(PORT, HOST, () =>
   console.log(`Server listening at http://localhost:${PORT}`)
 );
+module.exports.handler = serverless(app);
