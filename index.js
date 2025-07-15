@@ -8,15 +8,16 @@ const cookieParser = require("cookie-parser");
 const urlRoute = require("./routes/routes.js");
 const staticRoute = require("./routes/staticRouter.js");
 const userRoute = require("./routes/user.js");
+require("dotenv").config();
 
 const {
   restrictToLoggedInUserOnly,
   checkAuth,
 } = require("./middleware/auth.js");
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-connectToMongoDb(process.env.MONGO_URI)
+connectToMongoDb(process.env.MONGODB_URI)
   .then(() => console.log("Database ready"))
   .catch((err) => {
     console.error("Connection failed", err);
@@ -32,7 +33,6 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 
 
 // Route handlers
