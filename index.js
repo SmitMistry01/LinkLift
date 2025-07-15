@@ -13,12 +13,12 @@ const {
   checkAuth,
 } = require("./middleware/auth.js");
 
-const PORT = 8081;
-const HOST = "localhost";
-//console.log()
-connectToMongoDb("mongodb://127.0.0.1:27017/short_url")
+const MONGO_URI = process.env.MONGO_URI;
+
+connectToMongoDb(MONGO_URI)
   .then(() => console.log("Database connected successfully"))
   .catch((err) => console.error("Database connection failed:", err));
+
 
 // Set up view engine
 app.set("view engine", "ejs");
