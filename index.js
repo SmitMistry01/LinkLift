@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const urlRoute = require("./routes/routes.js");
 const staticRoute = require("./routes/staticRouter.js");
 const userRoute = require("./routes/user.js");
+require("dotenv").config();
 const {
   restrictToLoggedInUserOnly,
   checkAuth,
@@ -15,9 +16,12 @@ const {
 
 const MONGO_URI = process.env.MONGO_URI;
 
-connectToMongoDb(MONGO_URI)
-  .then(() => console.log("Database connected successfully"))
-  .catch((err) => console.error("Database connection failed:", err));
+connectToMongoDb(process.env.MONGO_URI)
+  .then(() => console.log("Database ready"))
+  .catch((err) => {
+    console.error("Connection failed", err);
+    process.exit(1);
+  });
 
 
 // Set up view engine
@@ -28,6 +32,8 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
 
 // Route handlers
 app.use("/url", restrictToLoggedInUserOnly, urlRoute);
@@ -54,6 +60,9 @@ app.get("/url/:shortID", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+console.log("Mongo URI:", process.env.MONGO_URI);
+
 
 module.exports = app;
 module.exports.handler = serverless(app);
