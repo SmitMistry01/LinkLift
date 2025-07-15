@@ -55,7 +55,5 @@ app.get("/url/:shortID", async (req, res) => {
   }
 });
 
-app.listen(PORT, HOST, () =>
-  console.log(`Server listening at http://localhost:${PORT}`)
-);
+module.exports = app;
 module.exports.handler = serverless(app);
