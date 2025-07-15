@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const urlRoute = require("./routes/routes.js");
 const staticRoute = require("./routes/staticRouter.js");
 const userRoute = require("./routes/user.js");
-require("dotenv").config();
+
 const {
   restrictToLoggedInUserOnly,
   checkAuth,
@@ -60,8 +60,6 @@ app.get("/url/:shortID", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-console.log("Mongo URI:", process.env.MONGO_URI);
 
 
 module.exports = app;
