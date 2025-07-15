@@ -1,3 +1,5 @@
+##LinkLift
+
 Url Shortner using node and express JS
 
 Description
@@ -9,10 +11,10 @@ I have added a basic UI with a table of the redirects and visit history to highl
 Installation : 
 
 Clone the repository:
-git clone https://github.com/SmitMistry01/url_shortner_node
+git clone https://github.com/SmitMistry01/LinkLift.git
 
 Navigate to the project directory:
-cd url_shortner_node
+cd LinkLift
 
 Install dependencies:
 npm i
